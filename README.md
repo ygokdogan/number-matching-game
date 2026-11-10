@@ -1,7 +1,5 @@
 # Number Matching Game
 
-**Aynı sayıları bağla, bütün tahtayı doldur.**
-
 C ile geliştirilmiş, terminal üzerinden oynanan bir sayı eşleştirme ve yol oluşturma oyunu. Manuel modda çözümü adım adım kurabilir veya otomatik modda özyinelemeli geri izleme (*recursive backtracking*) algoritmasının çözüm arayışını izleyebilirsin.
 
 Yapısal Programlama dönem projesi kapsamında geliştirilen uygulama; dinamik bellek yönetimini, özyinelemeyi, yığın veri yapısını ve ikili dosya işlemlerini tek bir oyun akışında bir araya getirir.
