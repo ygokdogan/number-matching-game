@@ -1,26 +1,28 @@
 # Number Matching Game
 
-C ile geliştirilmiş, terminal üzerinden oynanan bir sayı eşleştirme ve yol oluşturma oyunu. Manuel modda çözümü adım adım kurabilir veya otomatik modda özyinelemeli geri izleme (*recursive backtracking*) algoritmasının çözüm arayışını izleyebilirsin.
+English | [Türkçe](README.tr.md)
 
-Yapısal Programlama dönem projesi kapsamında geliştirilen uygulama; dinamik bellek yönetimini, özyinelemeyi, yığın veri yapısını ve ikili dosya işlemlerini tek bir oyun akışında bir araya getirir.
+A terminal-based number matching and path-building puzzle written in C. Play manually or use the automatic solver to explore solutions through recursive backtracking.
+
+Developed as a Structured Programming term project, the application combines dynamic memory management, recursion, a stack-based move history, and binary file operations.
 
 <p align="center">
-  <img src="screenshots/gameplay-06.png" alt="Manuel oyun sırasında geri alınmış bir hamle ve 5×5 oyun tahtası" width="640">
+  <img src="screenshots/gameplay-06.png" alt="A 5×5 board in manual mode after undoing a move" width="640">
 </p>
 
-## Özellikler
+## Features
 
-- **İki oyun modu:** Hamleleri kendin yap veya otomatik çözücüyü çalıştır.
-- **İki tahta kaynağı:** Rastgele tahta üret ya da metin dosyasından yükle.
-- **Hamle kontrolü:** Sınır, yön, kaynak hücre ve yol uygunluğu denetimleri.
-- **Geri alma:** Yığın tabanlı hamle geçmişiyle son hamleyi geri al.
-- **Kaydet ve devam et:** Oyunu kullanıcıya özel dosyada sakla, ana menüden yeniden yükle.
-- **Oyuncu profilleri:** En iyi skor, tamamlanan oyun sayısı ve oyun geçmişi.
-- **Skor sistemi:** Tahta boyutu, süre, geri alma sayısı, oyun modu ve deneyime göre puanlama.
+- **Two game modes:** Make moves manually or run the automatic solver.
+- **Two board sources:** Generate a random board or load one from a text file.
+- **Move validation:** Check board boundaries, movement direction, source cells, and path availability.
+- **Undo:** Reverse the last move using a stack-based history.
+- **Save and resume:** Save a session to a player-specific file and reload it from the main menu.
+- **Player profiles:** Track best scores, completed games, and game history.
+- **Scoring:** Calculate points from board size, elapsed time, undo count, game mode, and experience.
 
-## Hızlı başlangıç
+## Quick start
 
-GCC veya Clang gibi bir C derleyicisi yeterlidir; üçüncü taraf kütüphane gerekmez. Aşağıdaki komutları proje klasöründe çalıştır.
+A C compiler such as GCC or Clang is required. No third-party libraries are needed. Run the following commands from the project directory.
 
 ### macOS / Linux
 
@@ -36,38 +38,38 @@ gcc -std=c11 -Wall -Wextra number_matching.c -o number-matching.exe
 .\number-matching.exe
 ```
 
-> Uygulama, tahta ve kayıt dosyalarını çalıştırıldığı klasöre göre okur ve yazar. Örnek dosyayı kullanmak ve kayıtları aynı yerde tutmak için proje kökünden çalıştır.
+> Board and save files are read and written relative to the current working directory. Run the application from the project root to access the sample board and keep saves in the same location.
 
-## Nasıl oynanır?
+## How to play
 
-Amaç, aynı değere sahip sayı çiftlerini yatay ve dikey yollarla birleştirmek ve tahtada boş hücre bırakmamaktır.
+Connect pairs of matching numbers using horizontal and vertical paths, leaving no empty cells on the board.
 
-1. Ana menüden `Create Random Matrix` veya `Create Matrix From File` seçeneğini seç.
-2. En az 3 karakterli, boşluk içermeyen bir kullanıcı adı gir.
-3. `Manual Mode` veya `Automatic Mode` seç.
-4. Rastgele oyun için tahta boyutunu gir; minimum boyut `3` olur. Dosyadan oyun için örneğin `sample-board.txt` yaz.
-5. Manuel modda `Make a Move` ile kaynak ve hedef hücreyi `Row Col` biçiminde gir. Oyun içi satır ve sütun numaraları **1'den başlar**.
+1. Select `Create Random Matrix` or `Create Matrix From File` from the main menu.
+2. Enter a username with at least 3 characters and no spaces.
+3. Select `Manual Mode` or `Automatic Mode`.
+4. For a random board, enter a size; the minimum is `3`. To load a board, enter a filename such as `sample-board.txt`.
+5. In manual mode, select `Make a Move` and enter the source and target cells as `Row Col`. In-game coordinates are **1-based**.
 
-Her hamle aynı satır veya sütun boyunca ilerler; dönüş yapmak için yeni bir hamle gerekir. Yol üzerindeki ara hücreler boş olmalı, hedef hücre boş veya kaynakla aynı değerde olmalıdır. Farklı sayıların yolları kesişemez. Kazanmak için tüm eşleşmelerin tamamlanması ve bütün hücrelerin doldurulması gerekir.
+Each move follows a single row or column; turning requires another move. Intermediate cells must be empty, and the target must be empty or contain the same number as the source. Paths belonging to different numbers cannot cross. Winning requires completing every match and filling every cell.
 
-| İşlem | Manuel mod | Otomatik mod |
+| Option | Manual mode | Automatic mode |
 | --- | --- | --- |
-| `1` | Hamle yap | Tahtayı çöz |
-| `2` | Son hamleyi geri al | Oyunu kaydet |
-| `3` | Oyunu kaydet | — |
-| `0` | Kaydet ve ana menüye dön | Kaydet ve ana menüye dön |
+| `1` | Make a move | Solve the board |
+| `2` | Undo the last move | Save the game |
+| `3` | Save the game | — |
+| `0` | Save and return to the main menu | Save and return to the main menu |
 
-Kaydedilen oyuna ana menüdeki `Load Saved Game` seçeneğinden, ilgili kullanıcı adıyla devam edebilirsin.
+To resume a session, select `Load Saved Game` from the main menu using the corresponding username.
 
-## Tahta dosyası formatı
+## Board file format
 
-Her satır bir hücreyi tanımlar:
+Each line describes one cell:
 
 ```text
-satır sütun sayı
+row column number
 ```
 
-Dosya koordinatları **0'dan başlar**. Örneğin:
+File coordinates are **0-based**. For example:
 
 ```text
 1 0 1
@@ -76,43 +78,44 @@ Dosya koordinatları **0'dan başlar**. Örneğin:
 6 6 2
 ```
 
-Burada ilk iki satır `1` sayısının iki ucunu, sonraki iki satır `2` sayısının iki ucunu yerleştirir. Bu kesit yalnızca biçimi gösterir; tam bir oyun tahtası değildir. Tahta boyutu, dosyadaki en büyük satır veya sütun indeksinin bir fazlasından hesaplanır; ayrı bir boyut başlığı bulunmaz.
+The first two lines place the endpoints for `1`, and the next two place the endpoints for `2`. This snippet illustrates the format; it is not a complete puzzle. The board size is calculated as one more than the largest row or column index in the file. There is no separate size header.
 
-Depodaki `sample-board.txt` örnek koordinat dosyasıdır. Dosya adı boyutu belirlemez: mevcut içerikte en büyük indeks `7` olduğu için tahta 8×8 olarak oluşturulur.
+The repository includes `sample-board.txt`. The filename does not determine the dimensions: its largest coordinate is `7`, so it produces an 8×8 board.
 
-## Teknik yapı
+## Implementation
 
-| Yapı / bileşen | Sorumluluk |
+| Structure / component | Responsibility |
 | --- | --- |
-| `Board` | Dinamik olarak ayrılan iki boyutlu oyun tahtası |
-| `Move` / `MoveStack` | Hamle bilgileri ve geri alma geçmişi |
-| `GameSession` | Tahta, mod, süre, skor ve eşleşme durumu |
-| `Player` / `PlayerList` | Oyuncu profilleri ve tamamlanan oyunlar |
-| `solvePathRecursive` | Özyinelemeli çözüm arama ve geri izleme |
-| `isValidMove` / `checkPathRecursive` | Hamle ve yol uygunluğu kontrolü |
+| `Board` | Dynamically allocated two-dimensional board |
+| `Move` / `MoveStack` | Move data and undo history |
+| `GameSession` | Board, mode, timing, score, and matching state |
+| `Player` / `PlayerList` | Player profiles and completed games |
+| `solvePathRecursive` | Recursive solution search and backtracking |
+| `isValidMove` / `checkPathRecursive` | Move and path validation |
 
-### Puanlama
+### Scoring
 
 ```text
-skor = (N² × 500 / (süre + geriAlmaSayısı × 5))
-       × modÇarpanı × kaynakÇarpanı × (1 + tamamlananOyunSayısı × 0.02)
+score = (N² × 500 / (duration + undoCount × 5))
+        × modeMultiplier × sourceMultiplier × (1 + completedGames × 0.02)
 ```
 
-Süre saniye cinsindendir ve en az `1` kabul edilir. Mod çarpanı manuel oyunda `1.0`, otomatik oyunda `0.05`; kaynak çarpanı rastgele tahtada `1.0`, dosyadan yüklenen tahtada `0.8` olur. Deneyim çarpanında mevcut oyundan önce tamamlanan oyun sayısı kullanılır.
+Duration is measured in seconds with a minimum of `1`. The mode multiplier is `1.0` for manual play and `0.05` for automatic play. The source multiplier is `1.0` for random boards and `0.8` for boards loaded from a file. The experience multiplier uses the number of games completed before the current game.
 
-## Dosya düzeni
+## Project structure
 
 ```text
 .
-├── number_matching.c          # Uygulamanın kaynak kodu
-├── sample-board.txt             # Örnek tahta koordinatları
-├── screenshots/       # Uygulamadan ekran görüntüleri
+├── number_matching.c  # Application source code
+├── sample-board.txt   # Sample board coordinates
+├── screenshots/       # Gameplay screenshots
 ├── .gitignore
-└── README.md
+├── README.md          # English documentation
+└── README.tr.md       # Turkish documentation
 ```
 
-Çalıştırma sırasında `players.bin` ve `<kullanıcı_adı>_save.bin` dosyaları oluşur. Derlenmiş programlar ve yerel oyun kayıtları Git kapsamı dışında tutulur. Kaynak kod, örnek tahta ve ekran görüntüleri depoya dahildir.
+The application creates `players.bin` and `<username>_save.bin` during use. Compiled executables and local save files are excluded from Git. Source code, the sample board, and screenshots are included in the repository.
 
-## Mevcut sınırlamalar
+## Known limitations
 
-Bu sürüm bir dönem projesidir. Otomatik çözücünün arama süresi büyük tahtalarda artabilir. Dosyadan tahta okuma işlevinde, dosyada belirtilmeyen hücreler için kullanılan geçici matris sıfırlanmadığından beklenmeyen hücre değerleri oluşabilir; giriş doğrulaması da sınırlıdır. Özel tahta dosyaları hazırlanırken bu davranış dikkate alınmalıdır.
+This version was developed as a term project. The automatic solver may take longer on larger boards. The file-loading function does not initialize its temporary matrix, so cells omitted from the input file may contain unexpected values. Input validation is also limited. Keep these behaviors in mind when preparing custom board files.
